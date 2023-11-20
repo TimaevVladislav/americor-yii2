@@ -2,7 +2,11 @@
 
 use app\widgets\HistoryList\HistoryList;
 
-$this->title = 'Americor Test';
+/**
+ * @var $this yii\web\View
+ */
+
+$this->title = Yii::t('app', 'Americor Test');
 ?>
 
 <div class="site-index">
