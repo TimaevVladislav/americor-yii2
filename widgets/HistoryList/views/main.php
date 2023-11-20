@@ -11,6 +11,8 @@ use yii\widgets\Pjax;
 /* @var $model HistorySearch */
 /* @var $linkExport string */
 
+$this->title = Yii::t('app', 'History');
+
 ?>
 
 <?php Pjax::begin(['id' => 'grid-pjax', 'formSelector' => false]); ?>
@@ -19,14 +21,9 @@ use yii\widgets\Pjax;
     <div class="panel-body panel-body-selected">
 
         <div class="pull-sm-right">
-            <?php if (!empty($linkExport)) {
-                echo Html::a(Yii::t('app', 'CSV'), $linkExport,
-                    [
-                        'class' => 'btn btn-success',
-                        'data-pjax' => 0
-                    ]
-                );
-            } ?>
+            <?php
+            echo !empty($linkExport) ? Html::a(Yii::t('app', 'CSV'), $linkExport, ['class' => 'btn btn-success', 'data-pjax' => 0]) : '';
+            ?>
         </div>
 
     </div>
@@ -35,14 +32,8 @@ use yii\widgets\Pjax;
 <?php echo ListView::widget([
     'dataProvider' => $dataProvider,
     'itemView' => '_item',
-    'options' => [
-        'tag' => 'ul',
-        'class' => 'list-group'
-    ],
-    'itemOptions' => [
-        'tag' => 'li',
-        'class' => 'list-group-item'
-    ],
+    'options' => ['tag' => 'ul', 'class' => 'list-group'],
+    'itemOptions' => ['tag' => 'li', 'class' => 'list-group-item'],
     'emptyTextOptions' => ['class' => 'empty p-20'],
     'layout' => '{items}{pager}',
 ]); ?>
