@@ -22,7 +22,6 @@ $this->title = Yii::t('app', 'History');
 
         <div class="pull-sm-right">
             <?php
-            // Use the null coalescing operator to simplify the condition
             echo !empty($linkExport) ? Html::a(Yii::t('app', 'CSV'), $linkExport, ['class' => 'btn btn-success', 'data-pjax' => 0]) : '';
             ?>
         </div>
