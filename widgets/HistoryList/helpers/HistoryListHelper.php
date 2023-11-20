@@ -7,29 +7,29 @@ use app\models\History;
 
 class HistoryListHelper
 {
-    public static function getBodyByModel(History $model)
+    public static function getBodyByModel(History $model): string
     {
-        switch ($model->event) {
-            case History::EVENT_CREATED_TASK:
-            case History::EVENT_COMPLETED_TASK:
-            case History::EVENT_UPDATED_TASK:
-                return self::getTaskEventText($model);
-            case History::EVENT_INCOMING_SMS:
-            case History::EVENT_OUTGOING_SMS:
-                return self::getSmsEventText($model);
-            case History::EVENT_OUTGOING_FAX:
-            case History::EVENT_INCOMING_FAX:
-                return $model->eventText;
-            case History::EVENT_CUSTOMER_CHANGE_TYPE:
-                return self::getCustomerChangeEventText($model, 'type');
-            case History::EVENT_CUSTOMER_CHANGE_QUALITY:
-                return self::getCustomerChangeEventText($model, 'quality');
-            case History::EVENT_INCOMING_CALL:
-            case History::EVENT_OUTGOING_CALL:
-                return self::getCallEventText($model);
-            default:
-                return $model->eventText;
+        $eventHandlers = [
+            History::EVENT_CREATED_TASK => 'getTaskEventText',
+            History::EVENT_COMPLETED_TASK => 'getTaskEventText',
+            History::EVENT_UPDATED_TASK => 'getTaskEventText',
+            History::EVENT_INCOMING_SMS => 'getSmsEventText',
+            History::EVENT_OUTGOING_SMS => 'getSmsEventText',
+            History::EVENT_OUTGOING_FAX => 'getEventText',
+            History::EVENT_INCOMING_FAX => 'getEventText',
+            History::EVENT_CUSTOMER_CHANGE_TYPE => 'getCustomerChangeEventText',
+            History::EVENT_CUSTOMER_CHANGE_QUALITY => 'getCustomerChangeEventText',
+            History::EVENT_INCOMING_CALL => 'getCallEventText',
+            History::EVENT_OUTGOING_CALL => 'getCallEventText'
+        ];
+
+        $handler = $eventHandlers[$model->event] ?? null;
+
+        if ($handler && method_exists(self::class, $handler)) {
+            return self::$handler($model);
         }
+
+        return $model->eventText;
     }
 
     private static function getTaskEventText(History $model): string
